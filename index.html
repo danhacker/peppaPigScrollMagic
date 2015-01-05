@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+	<head>
+	
+	<!-- filefile:///c:/Users/Daniel/OneDrive/test/ -->
+	
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+		<script src="js/lib/jquery.scrollmagic.min.js"></script>
+		<script src="js/lib/jquery.scrollmagic.debug.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+		<style>
+			body{font-family: 'Gloria Hallelujah', cursive;background:url(img/bgpattern.png) #53499F;font-size:13px;height:10000px;width:100%;}
+			
+			#intro{width:100%;height:600px;border:2px solid green;}
+			#intro .logo{width:200px;height:200px;background:url(img/intro/logo.png) no-repeat; background-size:100%;left:50%;margin-left:-100px;top:50px;position:relative;}
+			#intro .family{width:412px;height:300px;background:url(img/intro/family.png) no-repeat; background-size:100%;left:50%;margin-left:-216px;top:80px;position:relative;}
+			
+			
+			#cover{border:1px solid red;width:100%;height:600px}
+			#cover h1{font-size:56px;line-height:60px;text-align:center;color:#FFF;display:relative;width:300px;margin-left:auto;margin-right:auto;text-shadow:-4px 5px 1px #000}
+			#cover .pool{border:3px solid blue;background:#51449E;width:100%;height:60%}
+			#cover .water{position:relative;border-top:8px solid #66B7C8; background:url(img/title/pool-tile.png) repeat #4EB5B2;width:100%;height:40%;}
+			#cover div{display:inline-block;}
+			#cover .peppa{background:url(img/title/peppa200x249.png) no-repeat; background-size:100%;width:200px;height:249px;margin-left:-100px;position:relative;}
+			#cover .george{background:url(img/title/george200x218.png) no-repeat; background-size:100%;width:200px;height:218px;margin-left:-100px;position:relative;}
+			#cover .shadow{background:#4EB5B2;width:100%;top:40%;height:100px;position:absolute;left:0;opacity:0.5;}
+
+			#page1{width:100%;height:600px;background:url(img/p1/bg2.jpg) no-repeat; background-size:100% 100%;}
+			
+			#page1 .rain{opacity:0.6;z-index:1;top:20px;left:70px; position:absolute;height:12px;width:2px;background:blue;}
+			#page1 .cloud1    {z-index:3;opacity:1;background:url(img/p1/cloud1.png) no-repeat;    background-size:100%;width:65px;height:33px;position:absolute;top:14px;left:100px;}
+			#page1 .cloud1dark{z-index:2;opacity:1;background:url(img/p1/cloud1dark.png) no-repeat;background-size:100%;width:65px;height:33px;position:absolute;top:14px;left:100px;}
+			
+			#page1 .cloud2{background:url(img/p1/cloud2.png) no-repeat;background-size:100%;width:45px;height:31px;position:absolute;top:42px;left:320px;}
+			#page1 .puddle{background:url(img/p1/puddle.png) no-repeat;background-size:100%; width:102px;height:30px;position:absolute;top:331px;left:143px;opacity:0;}
+			
+			#page1 .daddy{height:101px;width:87px;background:url(img/p1/bg2-daddy.png) no-repeat;background-size:100%;position:absolute;top:268px; margin-left:-80px;}
+			#page1 .mummy{height:78px;width:67px;background:url(img/p1/bg2-mummy.png) no-repeat;background-size:100%;position:absolute;top:288px; margin-left:-65px;}
+			#page1 .peppa{height:53px;width:47px;background:url(img/p1/bg2-peppa.png) no-repeat;background-size:100%;position:absolute;top:313px; margin-left:-40px}
+			#page1 .george{height:36px;width:39px;background:url(img/p1/bg2-george.png) no-repeat;background-size:100%;position:absolute;top:329px; left:100%;}
+			
+			#page1 .ladder{background:url(img/p1/divingboard.png) no-repeat;background-size:100%;height:125px;width:102px;position:absolute;top:294px;left:225px}
+			#page1 .textbg{cursor:pointer;background:url(img/p1/bg2-textarea.png) no-repeat;background-size:100%;width:310px;height:100%;padding:5px 34px;top:50%;left:60%;position:relative;}
+			#page1 p span.highlight, #page1 p.highlight{color:red;font-weight:bold;}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+		
+			<div id="intro">
+				<div class="logo"></div>
+				<div class="family"></div>
+				<h1>Peppa Goes Swimming</h1>
+			</div>
+			
+			<div id="cover">
+				
+					<div class="pool">
+						<h1>Peppa Goes Swimming</h1>
+					</div>
+					<div class="water">
+						<div class="peppa"></div>
+						<div class="george"></div>
+						<div class="shadow"></div>
+					</div>
+				
+			</div>
+
+			<div id="page1">
+				<div class="cloud1"></div>
+				<div class="cloud1dark"></div>
+				<div class="cloud2"></div>
+				<div class="puddle"></div>
+				<div class="daddy"></div>
+				<div class="mummy"></div>
+				<div class="peppa"></div>
+				<div class="george"></div>
+				<div class="ladder"></div>
+				<div class="textbg">
+					<p class="first" data-speak="Its a lovely sunny day, and Peppa, and her family, are at the swimming pool.">It's a lovely sunny day and Peppa and her family are at the swimming pool.</p>
+					<p class="second">"Peppa! George! Let Daddy put on your armbands", snorts Mummy Pig.</p>
+				</div>
+				
+				<audio id="theme" src="audio/theme_tune.mp3"></audio>
+				<audio id="rain" src="audio/rain.mp3"></audio>
+				<audio id="boing" src="audio/boing.mp3"></audio>
+				<audio id="georgeSnort" src="audio/george_giggle_snort.mp3"></audio>
+				<audio id="peppaSnort" src="audio/peppa_giggle_snort.mp3"></audio>
+				<!--audio id="muddyPuddle" src="audio/muddy_puddle_splats.mp3"></audio-->
+				<audio id="peppaSplash" src="audio/peppa_splish_splash_splosh_giggle.mp3"></audio>
+				<audio id="peppaYipee" src="audio/peppa_yipee_giggle_snort.mp3"></audio>
+				
+			</div>
+		</div>
+
+	</body>
+
+	<script>
+		var controller = new ScrollMagic();
+		
+		$.fn.wrapChars = function(){
+			console.log('wrapChars:', this);
+			var elCharArray = $(this.text().split('')).map(function(i,o){return '<span>' + o + '</span>';})
+			var elNewHtml = elCharArray.toArray().join('').replace(/ /g, '\u00a0')
+			this.html(elNewHtml);
+			return this;
+		}
+		
+		$.fn.wrapWords = function(){
+			console.log('wrapWords:', this);
+			var elCharArray = $(this.text().split(' ')).map(function(i,o){return '<span>' + o + '</span>';})
+			var elNewHtml = elCharArray.toArray().join(' ');//.replace(/ /g, '\u00a0')
+			this.html(elNewHtml);
+			return this;
+		}
+		
+		function intro(){
+		
+			var theme = $('#theme')[0];
+			theme.volume = 1.0;
+		
+			setTimeout(function(){
+				theme.play();
+			}, 100);
+			
+			$('#intro h1').wrapChars();
+			var ti = new TimelineMax()
+				.add(TweenMax.to('#intro .logo', 500, {rotation:360, scale:1.4, transformOrigin:'50% 35%'}))
+				
+			var s = new ScrollScene({duration:1500})
+				.setTween(ti)
+				.setPin('#intro')
+				.addTo(controller)
+			s.addIndicators({zindex:100, suffix:'intro'});
+		}
+		
+		function cover(){
+		
+			var tl1 = new TimelineMax()
+				.add([
+					TweenMax.fromTo('#cover h1', 500, {opacity:0, scale:0}, {opacity:1,scale:1, rotation:360}),
+					TweenMax.fromTo('#cover .peppa',200, {opacity:0, left:-100, scale:0.5},{opacity:1, left:'45%', y:-85, scale:1}),
+					TweenMax.fromTo('#cover .george', 250, {opacity:0, left:'100%', scale:0.5},{opacity:1, left:'55%', y:-92, scale:1}),
+					TweenMax.to('#cover .peppa', 200,{x:'+=5', y:'+=5', yoyo:true, repeat:5, ease:Circ.easeInOut, delay:200}),
+					TweenMax.to('#cover .george', 180, {x:'-=5', y:'+=5', yoyo:true, repeat:5, ease:Circ.easeInOut, delay:175}),
+					TweenMax.to(theme, 100, {volume:0, delay:1500})
+				]);
+
+			var scene = new ScrollScene({triggerElement: '#cover', offset:420, duration:2000})
+				.setTween(tl1)
+				.setPin('#cover')
+				.addTo(controller);
+			scene.addIndicators({zindex:100, suffix:"title"});
+		}
+ 
+// $(function(){
+// //document.getElementById('theme').play();
+	// //$('#theme')[0].play();
+// }); 
+		//scene2 =[];
+		
+		function page1(){
+			
+			function cloudHold(){
+				//console.log('hold,', cloud1Interval);
+				if (!cloud1Holding){
+					cloud1Holding = true;
+					console.log('NEW holding')
+					TweenMax.to('#page1 .cloud1', 3, {opacity:0, scale:4});
+					TweenMax.to('#page1 .cloud1dark', 3, {opacity:1, scale:4, onComplete:function(){rain()}});
+					
+					
+				} else {
+					console.log('still');	
+					
+				}
+			}
+			
+			var peppaJumping;
+			
+			function rain(){
+			
+				function peppaRun(){
+					TweenMax.to('#page1 .peppa', 0, {transform:'scaleX(-1)'}); //, left:'50'});
+					$('#page1 .peppa').data('left', $('#page1 .peppa').css('left'));
+					
+					TweenMax.to($('#rain')[0], 2.5, {volume:0.2})
+					TweenMax.to('#page1 .peppa', 2.5, {left:'200'});
+					
+					muddyPuddleAudio = new Audio('audio/muddy_puddle_splats.mp3');
+					muddyPuddleAudio.loop = true;
+					muddyPuddleAudio.volume=1.0;
+					muddyPuddleAudio.play();
+					//$('#muddlePuddle')[0].loop = true;
+					//$('#muddlePuddle')[0].volume = 1.0;
+					//$('#muddyPuddle')[0].play();
+					peppaJumping = TweenMax.to('#page1 .peppa', 0.3, {top:'-=20', yoyo:true, repeat:-1, delay:2.8});
+					
+					setTimeout(function(){
+						$('#peppaYipee')[0].play();
+						
+					},2500)
+				}
+				
+				function showPuddle(){
+					TweenMax.fromTo('#page1 .puddle', 4, {opacity:0},{delay:1.5, opacity:1, onComplete:function(){ peppaRun()}});
+				}
+				
+				console.log('RAIN');
+				$('#rain')[0].play();
+					setTimeout(function(){
+						showPuddle();
+					},1500);
+				for (var i = 1; i<55; i++){
+						$('#page1').append('<div class="rain rain' + i + '"></div>');
+						var startLeft = Math.floor(Math.random() * 100);
+						var endLeft = Math.floor(Math.random() * 300)-80;
+						var delay = (Math.random() * 1.5);
+						var rotation = -15;
+						
+						TweenMax.fromTo('#page1 .rain' + i, 1, {rotation:rotation, left: '+=' + startLeft},{delay:delay, top:325, left: '+=' +endLeft, repeat:-1});
+						
+					}
+			}
+			
+			//$('#page1 p.first').wrapWords();
+			$('#page1 p.second').wrapWords();
+			
+			var t2 = new TimelineMax()
+				.add([
+					TweenMax.fromTo('#page1 .cloud1', 5000, {opacity:0.3}, {opacity:0.8, left:'+=40'}),
+					TweenMax.fromTo('#page1 .cloud1dark', 5000, {opacity:0.3}, {opacity:0.8, left:'+=40'}),
+					TweenMax.fromTo('#page1 .cloud2', 5000, {opacity:0.2}, {opacity:0.7, left:'+=20'}),
+					TweenMax.fromTo('#page1 .textbg', 450, {opacity:0, scale:0, top:'20%'}, {delay:300, opacity:1, scale:1, top:'70%', ease:Bounce.easeOut, onStart:function(){$('#boing')[0].play();}}),
+					TweenMax.fromTo('#page1 p.first', 1000, {opacity:0}, {delay:800, opacity:1}),
+					TweenMax.fromTo('#page1 .daddy', 4000, {left:0}, {delay:850, left:540}),
+					TweenMax.fromTo('#page1 .mummy', 3800, {left:0}, {delay:950, left:600}),
+					TweenMax.fromTo('#page1 .peppa', 3200, {left:0}, {delay:950, left:651}),
+					TweenMax.to('#page1 .george', 2900,{delay:950, left:672}),
+					TweenMax.fromTo('#page1 p.second', 300, {opacity:0}, {delay:4200, opacity:1}),
+					//TweenMax.to('#page1', 15, {delay:10})
+				]);
+			
+			var s2 = new ScrollScene({triggerElement: '#page1', offset: 320, duration:5000})//triggerElement:'#page1', duration:1500, offset:160})
+				.setTween(t2)
+				.setPin('#page1')
+				.addTo(controller);
+
+			s2.addIndicators({zindex:100, suffix:"page1"});
+			
+			cloud1Scene =[];
+			
+			cloud1Interval = 0;
+			cloud1Holding = false;
+			cloud1Holding = false;
+			
+			
+			$('#page1 .cloud1').bind('touchstart', function(){
+				console.log('START');
+				cloud1Interval = setInterval(cloudHold, 100);	
+			}).bind('touchend touchcancel', function(){
+				console.log('END');
+				cloud1Holding = false;
+				TweenMax.to('#page1 .cloud1', 1.5, {opacity:1, scale:1});
+				TweenMax.to('#page1 .cloud1dark', 1.5, {opacity:0, scale:1});
+				TweenMax.to('#page1 .rain', 0.5, {opacity:0});
+				TweenMax.to('#page1 .puddle', 3, {opacity:0});
+				peppaJumping.kill();
+				muddyPuddleAudio.pause()
+				TweenMax.to('#page1 .peppa', 0, {scaleX:1});
+				TweenMax.to('#page1 .peppa', 2.5, {left:$('#page1 .peppa').data('left')});
+				
+				clearInterval(cloud1Interval);
+				$('#rain')[0].pause();	
+			});
+			
+			$('#page1 .cloud1').mousedown(function(){
+				cloud1Interval = setInterval(cloudHold, 100);
+			}).bind('mouseup mouseleave', function(){
+				cloud1Holding = false;
+				TweenMax.to('#page1 .cloud1', 1.5, {opacity:1, scale:1});
+				TweenMax.to('#page1 .cloud1dark', 1.5, {opacity:0, scale:1});
+				TweenMax.to('#page1 .rain', 0.5, {opacity:0});
+				TweenMax.to('#page1 .puddle', 3, {opacity:0});
+				peppaJumping.kill();
+				muddyPuddleAudio.pause()
+				TweenMax.to('#page1 .peppa', 0, {scaleX:1});
+				TweenMax.to('#page1 .peppa', 2.5, {left:$('#page1 .peppa').data('left')});
+				clearInterval(cloud1Interval);
+				$('#rain')[0].pause();
+					//$('#rain').attr('src' ,'');
+			});
+			
+			$('#page1 .daddy').click(function(){
+				console.log('daddy oink');
+			});
+			
+			$('#page1 .peppa').click(function(){
+				$('#peppaSnort')[0].play();
+				TweenMax.fromTo('#page1 .peppa', 0.1, {transformOrigin:'50% 100%', rotation:'=-3'}, {rotation:'=3', yoyo:true, repeat:20});
+			});
+			
+			$('#page1 .george').click(function(){
+				$('#georgeSnort')[0].play();
+				TweenMax.fromTo('#page1 .george', 0.1, {transformOrigin:'50% 100%', rotation:'=-2'}, {rotation:'=2', yoyo:true, repeat:20});
+			});
+			
+			var speechTimeout;
+			var msg = new SpeechSynthesisUtterance();
+			var voices = window.speechSynthesis.getVoices();
+			
+			
+			console.log(voices);
+			$('#page1 p.first').bind('mouseover mouseout', function(e){	
+				$(this).toggleClass('highlight');
+				var text = $(this).data('speak');
+				if (e.type == 'mouseover'){
+					window.speechSynthesis.cancel();
+					speechTimeout = setTimeout(function(){
+						//var msg = new SpeechSynthesisUtterance(text);
+						var voices = window.speechSynthesis.getVoices();
+						console.log(voices);
+						msg.text = text;
+						msg.voice = voices[1];
+						//msg.pitch =2;
+						//msg.rate= 2;
+						//msg.voice = voices[2];
+						//window.speechSynthesis.speak(msg);
+						speechSynthesis.speak(msg);
+					}, 200);
+				} else 
+				{
+					clearTimeout(speechTimeout);
+				}
+			});
+			
+			$('#page1 p.second span').bind('mouseover mouseout', function(e){
+				$(this).toggleClass('highlight');
+				var text = $(this).text();
+				if (e.type == 'mouseover'){
+					window.speechSynthesis.cancel();
+					speechTimeout = setTimeout(function(){
+						var voices = window.speechSynthesis.getVoices();
+						msg.text = text;
+						msg.voice=voices[1];
+						//var msg = new SpeechSynthesisUtterance(text);
+						//msg.voice = voices[3];
+						speechSynthesis.speak(msg);
+					}, 200);
+				} else 
+				{
+					clearTimeout(speechTimeout);
+				}
+			
+			 // var range = window.getSelection() || document.getSelection() || document.selection.createRange();
+        // var word = $.trim(range.toString());
+        // if(word != '') {
+            // alert(word);
+        // }
+        // range.collapse();
+        // e.stopPropagation();
+			});
+			
+		}
+		
+		
+		
+		intro();
+		cover();
+		page1();
+	</script>
+</html>

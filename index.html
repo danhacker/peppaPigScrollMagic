@@ -99,7 +99,6 @@
 		var controller = new ScrollMagic();
 		
 		$.fn.wrapChars = function(){
-			console.log('wrapChars:', this);
 			var elCharArray = $(this.text().split('')).map(function(i,o){return '<span>' + o + '</span>';})
 			var elNewHtml = elCharArray.toArray().join('').replace(/ /g, '\u00a0')
 			this.html(elNewHtml);
@@ -107,7 +106,6 @@
 		}
 		
 		$.fn.wrapWords = function(){
-			console.log('wrapWords:', this);
 			var elCharArray = $(this.text().split(' ')).map(function(i,o){return '<span>' + o + '</span>';})
 			var elNewHtml = elCharArray.toArray().join(' ');//.replace(/ /g, '\u00a0')
 			this.html(elNewHtml);
@@ -158,6 +156,8 @@
 	// //$('#theme')[0].play();
 // }); 
 		//scene2 =[];
+		var peppaJumping;
+		var muddyPuddleAudio;
 		
 		function page1(){
 			
@@ -165,18 +165,13 @@
 				//console.log('hold,', cloud1Interval);
 				if (!cloud1Holding){
 					cloud1Holding = true;
-					console.log('NEW holding')
 					TweenMax.to('#page1 .cloud1', 3, {opacity:0, scale:4});
 					TweenMax.to('#page1 .cloud1dark', 3, {opacity:1, scale:4, onComplete:function(){rain()}});
-					
-					
-				} else {
-					console.log('still');	
-					
 				}
+				// else {
+					// console.log('still holding');
+				// }
 			}
-			
-			var peppaJumping;
 			
 			function rain(){
 			
@@ -185,21 +180,20 @@
 					$('#page1 .peppa').data('left', $('#page1 .peppa').css('left'));
 					
 					TweenMax.to($('#rain')[0], 2.5, {volume:0.2})
-					TweenMax.to('#page1 .peppa', 2.5, {left:'200'});
-					
-					muddyPuddleAudio = new Audio('audio/muddy_puddle_splats.mp3');
-					muddyPuddleAudio.loop = true;
-					muddyPuddleAudio.volume=1.0;
-					muddyPuddleAudio.play();
-					//$('#muddlePuddle')[0].loop = true;
-					//$('#muddlePuddle')[0].volume = 1.0;
-					//$('#muddyPuddle')[0].play();
-					peppaJumping = TweenMax.to('#page1 .peppa', 0.3, {top:'-=20', yoyo:true, repeat:-1, delay:2.8});
-					
-					setTimeout(function(){
+					TweenMax.to('#page1 .peppa', 2.5, {left:'200', onComplete:function(){
 						$('#peppaYipee')[0].play();
-						
-					},2500)
+						muddyPuddleAudio = new Audio('audio/muddy_puddle_splats.mp3');
+						muddyPuddleAudio.loop = true;
+						muddyPuddleAudio.volume=1.0;
+						muddyPuddleAudio.play();
+					}});
+					var peppaJumping = TweenMax.to('#page1 .peppa', 0.26, {top:'-=20', yoyo:true, repeat:-1, delay:2.8});
+					console.log('pj', peppaJumping);
+					console.log('type pj', typeof(peppaJumping));
+					setTimeout(function(){
+					alert('canne killit');
+						peppaJumping.killAll(false, false);
+					}, 2000);
 				}
 				
 				function showPuddle(){
@@ -254,41 +248,44 @@
 			cloud1Holding = false;
 			cloud1Holding = false;
 			
-			
-			$('#page1 .cloud1').bind('touchstart', function(){
-				console.log('START');
-				cloud1Interval = setInterval(cloudHold, 100);	
-			}).bind('touchend touchcancel', function(){
-				console.log('END');
+			function KillAll(){
+				console.log('KillAll');
 				cloud1Holding = false;
 				TweenMax.to('#page1 .cloud1', 1.5, {opacity:1, scale:1});
 				TweenMax.to('#page1 .cloud1dark', 1.5, {opacity:0, scale:1});
 				TweenMax.to('#page1 .rain', 0.5, {opacity:0});
 				TweenMax.to('#page1 .puddle', 3, {opacity:0});
-				peppaJumping.kill();
-				muddyPuddleAudio.pause()
-				TweenMax.to('#page1 .peppa', 0, {scaleX:1});
+				try{
+					console.log('peppaJumping', peppaJumping);
+					console.log('type', typeof(peppaJumping));
+					//TweenMax.killTweensOf('#page1 .peppa');
+					peppaJumping.killAll(false, false);
+					TweenMax.to('#page1 .peppa', 0.25, {top:313});
+					//peppaJumping.killAll();
+					//console.log('a');
+					//peppaJumping.updateTo({top:'313px'}, true);
+					//console.log('b');
+					muddyPuddleAudio.pause();
+					console.log('c');
+				}
+				catch(err){console.log(err);}
+				TweenMax.to('#page1 .peppa', 0, {transform:'scaleX(1)'});
 				TweenMax.to('#page1 .peppa', 2.5, {left:$('#page1 .peppa').data('left')});
 				
 				clearInterval(cloud1Interval);
 				$('#rain')[0].pause();	
+			}
+			
+			$('#page1 .cloud1').bind('touchstart', function(){
+				cloud1Interval = setInterval(cloudHold, 100);	
+			}).bind('touchend touchcancel', function(){
+				KillAll();
 			});
 			
 			$('#page1 .cloud1').mousedown(function(){
 				cloud1Interval = setInterval(cloudHold, 100);
 			}).bind('mouseup mouseleave', function(){
-				cloud1Holding = false;
-				TweenMax.to('#page1 .cloud1', 1.5, {opacity:1, scale:1});
-				TweenMax.to('#page1 .cloud1dark', 1.5, {opacity:0, scale:1});
-				TweenMax.to('#page1 .rain', 0.5, {opacity:0});
-				TweenMax.to('#page1 .puddle', 3, {opacity:0});
-				peppaJumping.kill();
-				muddyPuddleAudio.pause()
-				TweenMax.to('#page1 .peppa', 0, {scaleX:1});
-				TweenMax.to('#page1 .peppa', 2.5, {left:$('#page1 .peppa').data('left')});
-				clearInterval(cloud1Interval);
-				$('#rain')[0].pause();
-					//$('#rain').attr('src' ,'');
+				KillAll();
 			});
 			
 			$('#page1 .daddy').click(function(){
@@ -309,17 +306,13 @@
 			var msg = new SpeechSynthesisUtterance();
 			var voices = window.speechSynthesis.getVoices();
 			
-			
-			console.log(voices);
 			$('#page1 p.first').bind('mouseover mouseout', function(e){	
 				$(this).toggleClass('highlight');
 				var text = $(this).data('speak');
 				if (e.type == 'mouseover'){
 					window.speechSynthesis.cancel();
 					speechTimeout = setTimeout(function(){
-						//var msg = new SpeechSynthesisUtterance(text);
 						var voices = window.speechSynthesis.getVoices();
-						console.log(voices);
 						msg.text = text;
 						msg.voice = voices[1];
 						//msg.pitch =2;

@@ -11,23 +11,23 @@
 		<style>
 			body{font-family: 'Gloria Hallelujah', cursive;background:url(img/bgpattern.png) #53499F;font-size:13px;height:10000px;width:100%;}
 			
-			#intro{width:100%;height:600px;border:2px solid green;}
-			#intro h1{top:100px;position:absolute;text-shadow:1px 1px 0 #FFF;}
-			#intro h1 span{display:inline-block;font-size:42px;}
+			#intro{width:100%;height:600px}
+			#intro h1{top:100px;position:absolute;text-shadow:1px 1px 0 #FFF;width:100%;height:100%}
+			#intro h1 span{display:inline-block;font-size:42px;position:relative;}
 			#intro .logo{width:200px;height:200px;background:url(img/intro/logo.png) no-repeat; background-size:100%;left:50%;margin-left:-100px;top:50px;position:relative;}
 			#intro .family{width:412px;height:300px;background:url(img/intro/family.png) no-repeat; background-size:100%;left:50%;margin-left:-216px;top:80px;position:relative;}
 			
 			
-			#cover{border:1px solid red;width:100%;height:600px}
+			#cover{width:100%;height:600px;margin-bottom:200px;}
 			#cover h1{font-size:56px;line-height:60px;text-align:center;color:#FFF;display:relative;width:300px;margin-left:auto;margin-right:auto;text-shadow:-4px 5px 1px #000}
-			#cover .pool{border:3px solid blue;background:#51449E;width:100%;height:60%}
+			#cover .pool{background:#51449E;width:100%;height:60%}
 			#cover .water{position:relative;border-top:8px solid #66B7C8; background:url(img/title/pool-tile.png) repeat #4EB5B2;width:100%;height:40%;}
 			#cover div{display:inline-block;}
 			#cover .peppa{background:url(img/title/peppa200x249.png) no-repeat; background-size:100%;width:200px;height:249px;margin-left:-100px;position:relative;}
 			#cover .george{background:url(img/title/george200x218.png) no-repeat; background-size:100%;width:200px;height:218px;margin-left:-100px;position:relative;}
 			#cover .shadow{background:#4EB5B2;width:100%;top:40%;height:100px;position:absolute;left:0;opacity:0.5;}
 
-			#page1{width:100%;height:600px;background:url(img/p1/bg2.jpg) no-repeat; background-size:100% 100%;}
+			#page1{height:600px;background:url(img/p1/bg2.jpg) no-repeat; background-size:auto 100%;}
 			
 			#page1 .rain{opacity:0.6;z-index:1;top:20px;left:70px; position:absolute;height:12px;width:2px;background:blue;}
 			#page1 .cloud1    {z-index:3;opacity:1;background:url(img/p1/cloud1.png) no-repeat;    background-size:100%;width:65px;height:33px;position:absolute;top:14px;left:100px;}
@@ -126,11 +126,15 @@
 			}, 100);
 			
 			$('#intro h1').wrapChars();
-			var path = [{x:-500,y:100}, {x:100, y:0}, {x:200, y:150}, {x:300, y:30}, {x:500, y:100}];
-			var position = {x:path[0].x, y:path[0].y}
+			//var path = [{x:-500,y:100}, {x:100, y:0}, {x:200, y:150}, {x:300, y:30}, {x:500, y:100}];
+			
+			var elements = $('#intro h1').find('span').get().reverse();
+			var path = [{left:'+=20%', top:'0'}, {left:'+=40%', top:'+=40%'}, {left:'+=75%', top:'-=5%'}];
+			//var position = {left:path[0].left, top:path[0].top}
+			var position = {x:-480, y:100};
 			var ti = new TimelineMax()
-				.add(TweenMax.fromTo('#intro .logo', 500, {scale:0.5,opacity:0.6},{scale:1, opacity:1, transformOrigin:'50% 35%'}))
-				.add(TweenMax.staggerFromTo($('#intro h1').find('span').get().reverse(), 400, {x:position.x, y:position.y,rotation:280},{rotation:0, bezier:path, ease:Bounce.BounceInOut},50))
+				.add(TweenMax.fromTo('#intro .logo', 500, {scale:0.1,opacity:0.6},{scale:1, opacity:1, transformOrigin:'50% 35%'}))
+				.add(TweenMax.staggerFromTo(elements, 400, {x:-480, y:100, rotation:-280}, {bezier:{values: path, autoRotate:false}, rotation:0, ease:Power1.easeInOut},50))
 				
 				
 			var s = new ScrollScene({duration:1500})
@@ -145,8 +149,8 @@
 			var tl1 = new TimelineMax()
 				.add([
 					TweenMax.fromTo('#cover h1', 500, {opacity:0, scale:0}, {opacity:1,scale:1, rotation:360}),
-					TweenMax.fromTo('#cover .peppa',200, {opacity:0, left:-100, scale:0.5},{opacity:1, left:'45%', y:-85, scale:1}),
-					TweenMax.fromTo('#cover .george', 250, {opacity:0, left:'100%', scale:0.5},{opacity:1, left:'55%', y:-92, scale:1}),
+					TweenMax.fromTo('#cover .peppa',200, {opacity:0, left:-100, scale:0.5},{opacity:1, left:'35%', y:-85, scale:1}),
+					TweenMax.fromTo('#cover .george', 250, {opacity:0, left:'100%', scale:0.5},{opacity:1, left:'65%', y:-92, scale:1}),
 					TweenMax.to('#cover .peppa', 200,{x:'+=5', y:'+=5', yoyo:true, repeat:5, ease:Circ.easeInOut, delay:200}),
 					TweenMax.to('#cover .george', 180, {x:'-=5', y:'+=5', yoyo:true, repeat:5, ease:Circ.easeInOut, delay:175}),
 					TweenMax.to(theme, 100, {volume:0, delay:1500})
@@ -191,16 +195,17 @@
 					$('#page1 .peppa').data('left', $('#page1 .peppa').css('left'));
 					
 					TweenMax.to($('#rain')[0], 2.5, {volume:0.2})
-					TweenMax.to('#page1 .peppa', 2.5, {left:'200'});
+					TweenMax.to('#page1 .peppa', 2.5, {left:'200', onComplete:function(){
 					
-					muddyPuddleAudio = new Audio('audio/muddy_puddle_splats.mp3');
-					muddyPuddleAudio.loop = true;
-					muddyPuddleAudio.volume=1.0;
-					muddyPuddleAudio.play();
+						muddyPuddleAudio = new Audio('audio/muddy_puddle_splats.mp3');
+						muddyPuddleAudio.loop = true;
+						muddyPuddleAudio.volume=1.0;
+						muddyPuddleAudio.play();
+					}});
 					//$('#muddlePuddle')[0].loop = true;
 					//$('#muddlePuddle')[0].volume = 1.0;
 					//$('#muddyPuddle')[0].play();
-					peppaJumping = TweenMax.to('#page1 .peppa', 0.3, {top:'-=20', yoyo:true, repeat:-1, delay:2.8});
+					peppaJumping = TweenMax.to('#page1 .peppa', 0.3, {top:'-=15', yoyo:true, ease:Power1.easeInOut, repeat:-1, delay:2.8});
 					
 					setTimeout(function(){
 						$('#peppaYipee')[0].play();
@@ -239,10 +244,10 @@
 					TweenMax.fromTo('#page1 .cloud2', 5000, {opacity:0.2}, {opacity:0.7, left:'+=20'}),
 					TweenMax.fromTo('#page1 .textbg', 450, {opacity:0, scale:0, top:'20%'}, {delay:300, opacity:1, scale:1, top:'70%', ease:Bounce.easeOut, onStart:function(){$('#boing')[0].play();}}),
 					TweenMax.fromTo('#page1 p.first', 1000, {opacity:0}, {delay:800, opacity:1}),
-					TweenMax.fromTo('#page1 .daddy', 4000, {left:0}, {delay:850, left:540}),
-					TweenMax.fromTo('#page1 .mummy', 3800, {left:0}, {delay:950, left:600}),
-					TweenMax.fromTo('#page1 .peppa', 3200, {left:0}, {delay:950, left:651}),
-					TweenMax.to('#page1 .george', 2900,{delay:950, left:672}),
+					TweenMax.fromTo('#page1 .daddy', 4000, {left:0}, {delay:850, left:409}),
+					TweenMax.fromTo('#page1 .mummy', 3800, {left:0}, {delay:950, left:469}),
+					TweenMax.fromTo('#page1 .peppa', 3200, {left:0}, {delay:950, left:505}),
+					TweenMax.fromTo('#page1 .george', 2900, {left:'100%'}, {delay:950, left:518}),
 					TweenMax.fromTo('#page1 p.second', 300, {opacity:0}, {delay:4200, opacity:1}),
 					//TweenMax.to('#page1', 15, {delay:10})
 				]);
@@ -260,50 +265,51 @@
 			cloud1Holding = false;
 			cloud1Holding = false;
 			
-			
-			$('#page1 .cloud1').bind('touchstart', function(){
-				console.log('START');
-				cloud1Interval = setInterval(cloudHold, 100);	
-			}).bind('touchend touchcancel', function(){
+			function rainStopped(){
 				console.log('END');
 				cloud1Holding = false;
 				TweenMax.to('#page1 .cloud1', 1.5, {opacity:1, scale:1});
 				TweenMax.to('#page1 .cloud1dark', 1.5, {opacity:0, scale:1});
 				TweenMax.to('#page1 .rain', 0.5, {opacity:0});
 				TweenMax.to('#page1 .puddle', 3, {opacity:0});
-				peppaJumping.kill();
-				muddyPuddleAudio.pause()
-				TweenMax.to('#page1 .peppa', 0, {scaleX:1});
+				TweenMax.to('#page1 .peppa', 0, {transform:'ScaleX(1)'});
 				TweenMax.to('#page1 .peppa', 2.5, {left:$('#page1 .peppa').data('left')});
 				
+				peppaJumping.kill();
+				muddyPuddleAudio.pause();
+				
+				TweenMax.to('#page1 .peppa', 0.2, {top:313});
+				
 				clearInterval(cloud1Interval);
-				$('#rain')[0].pause();	
+				$('#rain')[0].pause();
+			}
+			
+			
+			$('#page1 .cloud1').bind('touchstart', function(){
+				console.log('START');
+				cloud1Interval = setInterval(cloudHold, 100);	
+			}).bind('touchend touchcancel', function(){
+				rainStopped();
 			});
 			
 			$('#page1 .cloud1').mousedown(function(){
 				cloud1Interval = setInterval(cloudHold, 100);
 			}).bind('mouseup mouseleave', function(){
-				cloud1Holding = false;
-				TweenMax.to('#page1 .cloud1', 1.5, {opacity:1, scale:1});
-				TweenMax.to('#page1 .cloud1dark', 1.5, {opacity:0, scale:1});
-				TweenMax.to('#page1 .rain', 0.5, {opacity:0});
-				TweenMax.to('#page1 .puddle', 3, {opacity:0});
-				peppaJumping.kill();
-				muddyPuddleAudio.pause()
-				TweenMax.to('#page1 .peppa', 0, {scaleX:1});
-				TweenMax.to('#page1 .peppa', 2.5, {left:$('#page1 .peppa').data('left')});
-				clearInterval(cloud1Interval);
-				$('#rain')[0].pause();
-					//$('#rain').attr('src' ,'');
+				rainStopped();
 			});
 			
 			$('#page1 .daddy').click(function(){
-				console.log('daddy oink');
+				alert('Daddy Pig Oinks!!');
 			});
 			
 			$('#page1 .peppa').click(function(){
-				$('#peppaSnort')[0].play();
-				TweenMax.fromTo('#page1 .peppa', 0.1, {transformOrigin:'50% 100%', rotation:'=-3'}, {rotation:'=3', yoyo:true, repeat:20});
+				
+					$('#peppaSnort')[0].play();
+			
+				
+				setTimeout(function(){
+					TweenMax.fromTo('#page1 .peppa', 0.1, {transformOrigin:'50% 100%', rotation:'=-3'}, {rotation:'=3', yoyo:true, repeat:20});
+				},1000);
 			});
 			
 			$('#page1 .george').click(function(){

@@ -3,8 +3,10 @@
 	
 	<!-- filefile:///c:/Users/Daniel/OneDrive/test/ -->
 	
-		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+		
+		
+		<script src="js/lib/jquery-1.11.0.min.js"></script>
+		<script src="js/lib/TweenMax.min.js"></script>
 		<script src="js/lib/jquery.scrollmagic.min.js"></script>
 		<script src="js/lib/jquery.scrollmagic.debug.js"></script>
 		<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
@@ -27,7 +29,7 @@
 			#cover .george{background:url(img/title/george200x218.png) no-repeat; background-size:100%;width:200px;height:218px;margin-left:-100px;position:relative;}
 			#cover .shadow{background:#4EB5B2;width:100%;top:40%;height:100px;position:absolute;left:0;opacity:0.5;}
 
-			#page1{height:600px;background:url(img/p1/bg2.jpg) no-repeat; background-size:auto 100%;}
+			#page1{height:600px;background:url(img/p1/bg2.jpg) no-repeat; background-size:auto 100%;margin-bottom:300px}
 			
 			#page1 .rain{opacity:0.6;z-index:1;top:20px;left:70px; position:absolute;height:12px;width:2px;background:blue;}
 			#page1 .cloud1    {z-index:3;opacity:1;background:url(img/p1/cloud1.png) no-repeat;    background-size:100%;width:65px;height:33px;position:absolute;top:14px;left:100px;}
@@ -44,6 +46,10 @@
 			#page1 .ladder{background:url(img/p1/divingboard.png) no-repeat;background-size:100%;height:125px;width:102px;position:absolute;top:294px;left:225px}
 			#page1 .textbg{cursor:pointer;background:url(img/p1/bg2-textarea.png) no-repeat;background-size:100%;width:310px;height:100%;padding:5px 34px;top:50%;left:60%;position:relative;}
 			#page1 p span.highlight, #page1 p.highlight{color:red;font-weight:bold;}
+			
+			#map {height:600px;overflow:hidden;border:2px solid black;background:white;}
+			#map .world{background:url(img/map/paultons-park-map.jpg) no-repeat;background-size:53% 53%;height:3579px;width:7299px;position:absolute;top:0;opacity:0.2;}
+			#map .balloon{background:url(img/map/balloon.png) no-repeat;background-size:100% 100%;position:relative; top:10%;left:10%;width:203px;height:317px;z-index:2}
 		</style>
 	</head>
 	<body>
@@ -56,7 +62,6 @@
 			</div>
 			
 			<div id="cover">
-				
 					<div class="pool">
 						<h1>Peppa Goes Swimming</h1>
 					</div>
@@ -65,7 +70,6 @@
 						<div class="george"></div>
 						<div class="shadow"></div>
 					</div>
-				
 			</div>
 
 			<div id="page1">
@@ -91,6 +95,14 @@
 				<!--audio id="muddyPuddle" src="audio/muddy_puddle_splats.mp3"></audio-->
 				<audio id="peppaSplash" src="audio/peppa_splish_splash_splosh_giggle.mp3"></audio>
 				<audio id="peppaYipee" src="audio/peppa_yipee_giggle_snort.mp3"></audio>
+				
+			</div>
+			
+			<div id="map">
+				<div class="balloon"></div>
+				<div class="world">
+					
+				</div>
 				
 			</div>
 		</div>
@@ -375,10 +387,83 @@
 			
 		}
 		
+		function map(){
 		
+			//var path = [{left:'+=5%', top:'+=2%'}, {left:'+=5%', top:'-=2%'}, {left:'-=8%', top:'-=3%'}, {left:'-=5%', top:'-=3%'}];
+			var path = [{x:50, y:40}, {x:100, y:50}, {x:65, y:80}, {x:30, y:60}];
+		
+		//anchor dots from path
+		// for (i=0; i < path.length; i++){
+			// dot = $("<div />", {id:"Anchor"+i}).addClass("dot").css({left:path[i].x + "px", top:path[i].y + "px", position:"absolute", background:"black", height:4, width:4}).appendTo(".world"); //create a new dot, add the .dot class, set the position, and add it to the body.
+		// }
+		
+		var quantity = 30, //number of dots
+		   duration = 3,  //duration (in seconds)
+		   position = {x:path[0].x, y:path[0].y}, //tracks the current position, so we set it initially to the first node in the path. It's the target of the tween.
+		   tween = TweenMax.to(position, quantity, {bezier:path}), //this does all the work of figuring out the positions over time.
+		   tl = new TimelineMax({repeat:-1, yoyo:true}), //we'll use a TimelineMax to schedule things. You can then have total control of playback. pause(), resume(), reverse(), whatever.
+		   i, dot;  
+
+		   //we can remove the first point on the path because the position is already there and we want to draw the Bezier from there through the other points
+		  //path.shift();  
+
+		// for (i = 0; i < quantity; i++) {
+			// tween.time(i); //jumps to the appropriate time in the tween, causing position.x and position.y to be updated accordingly.
+			// console.log(i, position);			
+			// dot = $("<div />", {id:"dot"+i}).addClass("dot").css({left:position.x + "px", top:position.y + "px", position:"absolute", background:"red", height:2, width:2}).appendTo(".world"); //create a new dot, add the .dot class, set the position, and add it to the body.
+			// tl.set(dot, {visibility:"visible"}, i * (duration / quantity)); //toggle the visibility on at the appropriate time.
+		  // }
+		
+		//animate balloon		
+		TweenMax.fromTo('#map .balloon', 5, {x:path[0].x, y:path[0].y, scale:1}, { repeat:-1, yoyo:true, scale:0.7, opacity:0.9, bezier:{values:path, autoRotate:false}, rotation:10, ease:Power0.easeInOut})
+		
+			// var t = new TimelineMax()
+				// .add([
+					// TweenMax.to('#map .balloon', 500, {opacity:0.8, left:'+=40', bezier:{values:path, autoRotate:true}, ease:Power1.easeInOut})
+				// ]);
+			
+			
+			var flyPath = [{x:-10, y:0}, {x:-50, y:-300}, {x:-500, y:-400}, {x:-1000, y:-300}, {x:-1500, y:-520}, {x:-2000, y:-1000}, {x:-2500, y:-700}, {x:-3000, y:-1500}, {x:-2000, y:-2000}, {x:-1500, y:-1700}, {x:-1000, y:-1500}, {x:-2000, y:-1600}, {x:-2500, y:-1200},{x:-3000, y:-800},{x:-2800,y:-900}, {x:-2600,y:-1100}];
+			
+			// for (i=0; i < flyPath.length; i++){
+				// dot = $("<div />", {id:"Anchor"+i}).addClass("dot").css({left:-1*flyPath[i].x + "px", top:-1*flyPath[i].y + "px", position:"absolute", background:"black", height:4, width:4}).appendTo(".world"); //create a new dot, add the .dot class, set the position, and add it to the body.
+			// }
+		
+		
+			var ti = new TimelineMax()
+				//.add(TweenMax.fromTo('#map .world', 500, {backgroundPosition:'0 0'},{backgroundPosition:'-40px -100px'}))
+				.add(TweenMax.fromTo('#map .world', 25000, {backgroundPosition:flyPath[0].x + 'px ' + flyPath[0].y + 'px'},{bezier:{values:flyPath},ease:Power0.easeInOut}))
+				.add(TweenMax.fromTo('#map .world', 18000, {backgroundSize:'53% 53%', opacity:0.2}, {opacity:0.7, backgroundSize:'80% 80%', ease:Power1.Sine, delay:-25000}))
+				//.add(TweenMax.to('#map .world', 12000, {opacity:0.2, backgroundSize:'53% 53%', ease:Power0.Sine, delay:-18000}))
+				//.add(TweenMax.fromTo('#map .world', 4000, {opacity:0.3,backgroundSize:'70% 70%'}, {opacity:0.9, backgroundSize:'80% 80%', ease:Power0.easeInOut, delay:-2500}))
+				//.add(TweenMax.to('#map .world', 2000, {opacity:0.4, backgroundSize:'80% 80%', ease:Power0.easeInOut, delay:-5000}))
+				//.add(TweenMax.to('#map .world', 5000, {opacity:0.9, backgroundSize:'100% 100%', ease:Power0.easeInOut, delay:-3000}));
+				//.add(TweenMax.to('#map .world', 500, {backgroundPosition:'-5040px -30px'}))
+				//.add(TweenMax.fromTo('#map .world', 500, {backgroundPosition:'0 0'},{backgroundPosition:'-100px 0'}))
+				
+				
+			var s = new ScrollScene({triggerElement: '#map', offset: 320, duration:30000})//triggerElement:'#page1', duration:1500, offset:160})
+				.setTween(ti)
+				.setPin('#map')
+				.addTo(controller);
+
+			s.addIndicators({zindex:100, suffix:"map"});
+			
+			
+			
+			
+			//var position = {left:path[0].left, top:path[0].top}
+			// var position = {x:-480, y:100};
+			// var ti = new TimelineMax()
+				// .add(TweenMax.fromTo('#intro .logo', 500, {scale:0.1,opacity:0.6},{scale:1, opacity:1, transformOrigin:'50% 35%'}))
+				// .add(TweenMax.staggerFromTo(elements, 400, {x:-480, y:100, rotation:-280}, {bezier:{values: path, autoRotate:false}, rotation:0, ease:Power1.easeInOut},50))
+				
+		}
 		
 		intro();
 		cover();
 		page1();
+		
+		map();
 	</script>
 </html>
